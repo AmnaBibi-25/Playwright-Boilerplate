@@ -1,0 +1,15 @@
+{
+    "email": "aria4@gmail.com",
+    "password": "Qwerty123",
+    "birthDay": "25",
+    "birthMonth": "July",
+    "birthYear": "1997",
+    "firstname": "Aria",
+    "lastname": "Doe",
+    "address1": "House#001, Street 1",
+    "country": "New Zealand",
+    "state": "Aukland",
+    "city": "Aukland",
+    "zipcode": "0600",
+    "mobileNumber": "+64 123 4567"
+}
