@@ -1,40 +1,39 @@
 import { test, expect } from "@playwright/test"
 import  signupData from "../test-data/signup.json"
+import { SignUpPage } from "../pages/SignUpPage"
+import { NavigationPage } from "../pages/NavigationPage"
 
 test('sign up', async({page}) => {
     await page.goto('https://automationexercise.com/')
-    await page.locator('a[href="/login"]').click()
-    await page.locator('input[data-qa="signup-name"]').fill(signupData.firstname)
-    await page.locator('input[data-qa="signup-email"]').fill(signupData.email)
-    await page.getByRole('button', {name: "Signup"}).click()
+    const signUpPage = new SignUpPage(page);
+    const navigationPage = new NavigationPage(page);
+    await navigationPage.signUpLoginButton.click()
+    await signUpPage.nameInput.fill(signupData.firstname)
+    await signUpPage.emailAddressInput.fill(signupData.email)
+    await signUpPage.signUpBtn.click()
 
     //Enter Account Information
-    await page.getByLabel('Mrs').check()
-    const nameLocator = page.locator('#name')
-    await expect(nameLocator).toHaveValue(signupData.firstname)
+    await signUpPage.genderRadioBtn.check()
+    await expect(signUpPage.nameField).toHaveValue(signupData.firstname)
 
-    const emailLocator = page.locator('#email')
-    await expect(emailLocator).toHaveValue(signupData.email)
+    await expect(signUpPage.emailField).toHaveValue(signupData.email)
 
-    await page.locator('#password').fill(signupData.password)
-    await page.selectOption('#days', signupData.birthDay)
-    await page.selectOption('#months', signupData.birthMonth)
-    await page.selectOption('#years', signupData.birthYear)
+    await signUpPage.passwordField.fill(signupData.password)
+    await signUpPage.selectBirthDay(signupData.birthDay, signupData.birthMonth, signupData.birthYear)
 
     //Address Information
-    await page.locator('#first_name').fill(signupData.firstname)
-    await page.locator('#last_name').fill(signupData.lastname)
-    await page.locator('#address1').fill(signupData.address1)
-    await page.selectOption('#country', signupData.country)
-    await page.locator('#state').fill(signupData.state)
-    await page.locator('#city').fill(signupData.city)
-    await page.locator('#zipcode').fill(signupData.zipcode)
-    await page.locator('#mobile_number').fill(signupData.mobileNumber)
-    await page.getByRole('button', {name: "Create Account"}).click()
+    await signUpPage.firstNameInput.fill(signupData.firstname)
+    await signUpPage.lastNameInput.fill(signupData.lastname)
+    await signUpPage.address1Input.fill(signupData.address1)
+    await signUpPage.selectCountry(signupData.country)
+    await signUpPage.stateInput.fill(signupData.state)
+    await signUpPage.cityInput.fill(signupData.city)
+    await signUpPage.zipcodeInput.fill(signupData.zipcode)
+    await signUpPage.mobileNumberInput.fill(signupData.mobileNumber)
+    await signUpPage.createAccountBtn.click()
 
     //assertion
-    const message = page.locator('[data-qa="account-created"]');
-    await expect(message).toHaveText('Account Created!');
-    await page.locator('[data-qa="continue-button"]').click()
+    await expect(signUpPage.accountCreatedMessgeText).toHaveText('Account Created!');
+    await signUpPage.continueBtn.click()
 
 })
